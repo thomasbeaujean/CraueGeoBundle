@@ -8,8 +8,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * @author Christian Raue <christian.raue@gmail.com>
- * @copyright 2011-2014 Christian Raue
- * @license http://opensource.org/licenses/mit-license.php MIT License
+ * @copyright 2011-2013 Christian Raue
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 abstract class GeonamesPostalCodeData implements FixtureInterface {
 
@@ -49,6 +49,16 @@ abstract class GeonamesPostalCodeData implements FixtureInterface {
 
 			$country = $arr[0];
 			$postalCode = $arr[1];
+			$name = $arr[2];
+			$region = $arr[3];
+			$regionCode = $arr[4];
+			$departement = $arr[5];
+			$departementCode = $arr[6];
+			$district = $arr[7];
+			$districtCode = $arr[8];
+			$lat = $arr[9];
+			$lon = $arr[10];
+
 
 			// skip duplicate entries in current batch
 			if (in_array($country.'-'.$postalCode, $currentBatchEntries)) {
@@ -56,15 +66,22 @@ abstract class GeonamesPostalCodeData implements FixtureInterface {
 			}
 
 			// skip duplicate entries already persisted
-			if ($repo->findOneBy(array('country' => $country, 'postalCode' => $postalCode)) !== null) {
+			if ($repo->findOneBy(array('country' => $country, 'postalCode' => $postalCode, 'name' => $name)) !== null) {
 				continue;
 			}
 
 			$entity = new GeoPostalCode();
 			$entity->setCountry($country);
+			$entity->setName($name);
 			$entity->setPostalCode($postalCode);
-			$entity->setLat((float) $arr[9]);
-			$entity->setLng((float) $arr[10]);
+			$entity->setRegion($region);
+			$entity->setRegionCode($regionCode);
+			$entity->setDepartement($departement);
+			$entity->setDepartementCode($departementCode);
+			$entity->setDistrict($district);
+			$entity->setDistrictCode($districtCode);
+			$entity->setLat((float) $lat);
+			$entity->setLng((float) $lon);
 			$manager->persist($entity);
 
 			++$entriesAdded;
