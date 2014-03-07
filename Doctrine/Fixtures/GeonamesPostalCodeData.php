@@ -59,9 +59,11 @@ abstract class GeonamesPostalCodeData implements FixtureInterface {
 			$lat = $arr[9];
 			$lon = $arr[10];
 
+			//the identifier of the row (combination of columns)
+            $rowIdentifier = $country.'-'.$postalCode.'-'.$name;
 
 			// skip duplicate entries in current batch
-			if (in_array($country.'-'.$postalCode, $currentBatchEntries)) {
+			if (in_array($rowIdentifier, $currentBatchEntries)) {
 				continue;
 			}
 
@@ -85,7 +87,7 @@ abstract class GeonamesPostalCodeData implements FixtureInterface {
 			$manager->persist($entity);
 
 			++$entriesAdded;
-			$currentBatchEntries[] = $country.'-'.$postalCode;
+			$currentBatchEntries[] = $rowIdentifier;
 
 			if ((($i + 1) % $this->batchSize) === 0) {
 				$manager->flush();
