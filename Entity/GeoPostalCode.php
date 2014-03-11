@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Craue\GeoBundle\Repository\GeoPostalCodeRepository")
  * @ORM\Table(name="craue_geo_postalcode",
  *	uniqueConstraints={@ORM\UniqueConstraint(name="postal_code_idx", columns={
  *		"country", "postal_code", "name"
